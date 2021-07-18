@@ -47,16 +47,18 @@ public class Simulator {
 			int tifosiT1 = tifosiSquadra.get(t1);
 			int tifosiT2 = tifosiSquadra.get(t2);
 			if(tifosiT1<tifosiT2) {
-				double prob = 1.0-(1.0*(tifosiT1/tifosiT2));
+				double prob = 1.0-(((1.0*tifosiT1)/tifosiT2));
 				double rand = Math.random();
 				if(rand<prob) {
-					goalT1--;
+					if(goalT1>0)
+						goalT1--;
 				}
 			}else {
-				double prob = 1.0-(1.0*(tifosiT2/tifosiT1));
+				double prob = 1.0-(((1.0*tifosiT2)/tifosiT1));
 				double rand = Math.random();
 				if(rand<prob) {
-					goalT2--;
+					if(goalT2>0)
+						goalT2--;
 				}
 			}
 			int diff = goalT1-goalT2;
@@ -78,10 +80,14 @@ public class Simulator {
 		List<TeamWeight> classificaOrdinata = new ArrayList<>();
 		for(Team t : classifica.keySet()) {
 			classificaOrdinata.add(new TeamWeight(t,classifica.get(t)));
+			
 		}
 		Collections.sort(classificaOrdinata);
 		for(TeamWeight tw: classificaOrdinata) {
 			res+=tw;
+		}
+		for(Team t: tifosiSquadra.keySet()) {
+			System.out.println(t+"\t"+tifosiSquadra.get(t));
 		}
 		return res;
 	}
@@ -92,7 +98,9 @@ public class Simulator {
 		classifica.put(t, classifica.get(t)+1);
 	}
 	public void handleSconfitta(Team vittoriosa, Team sconfitta, int differenzaReti) {
-		int tifosi = ((differenzaReti*P)/100)*(tifosiSquadra.get(sconfitta));
+		double percentuale = (differenzaReti*P)/100.0;
+		int tifosiPerdennti = tifosiSquadra.get(sconfitta);
+		int tifosi =(int) (percentuale*tifosiPerdennti);
 		tifosiSquadra.put(vittoriosa, tifosiSquadra.get(vittoriosa)+tifosi);
 		tifosiSquadra.put(sconfitta, tifosiSquadra.get(sconfitta)-tifosi);
 	}
