@@ -47,13 +47,13 @@ public class Simulator {
 			int tifosiT1 = tifosiSquadra.get(t1);
 			int tifosiT2 = tifosiSquadra.get(t2);
 			if(tifosiT1<tifosiT2) {
-				double prob = 1.0-(1.0*tifosiT1/tifosiT2);
+				double prob = 1.0-(1.0*(tifosiT1/tifosiT2));
 				double rand = Math.random();
 				if(rand<prob) {
 					goalT1--;
 				}
 			}else {
-				double prob = 1.0-(1.0*tifosiT2/tifosiT1);
+				double prob = 1.0-(1.0*(tifosiT2/tifosiT1));
 				double rand = Math.random();
 				if(rand<prob) {
 					goalT2--;
