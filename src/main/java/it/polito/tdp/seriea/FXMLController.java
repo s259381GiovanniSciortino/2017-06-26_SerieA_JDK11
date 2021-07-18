@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.seriea.model.Model;
+import it.polito.tdp.seriea.model.Season;
+import it.polito.tdp.seriea.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,10 +25,10 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ChoiceBox<?> boxSquadra;
+    private ChoiceBox<Team> boxSquadra;
 
     @FXML
-    private ChoiceBox<?> boxStagione;
+    private ChoiceBox<Season> boxStagione;
 
     @FXML
     private Button btnCalcolaConnessioniSquadra;
@@ -42,17 +44,30 @@ public class FXMLController {
 
     @FXML
     void doAnalizzaSquadre(ActionEvent event) {
-
+    	String msg = model.doCreaGrafo();
+    	txtResult.appendText(msg);
+    	boxSquadra.getItems().clear();
+    	boxSquadra.getItems().addAll(model.getVertex());
     }
 
     @FXML
     void doCalcolaConnessioniSquadra(ActionEvent event) {
-
+    	if(boxSquadra.getValue()==null) {
+    		txtResult.appendText("Seleziona una squadra");
+    		return;
+    	}
+    	String msg = model.doConnessioniSquadra(boxSquadra.getValue());
+    	txtResult.appendText(msg);
     }
 
     @FXML
     void doSimulaTifosi(ActionEvent event) {
-
+    	if(boxStagione.getValue()==null) {
+    		txtResult.appendText("Seleziona una squadra");
+    		return;
+    	}
+    	String msg = model.doSimulazione(boxStagione.getValue());
+    	txtResult.appendText(msg);
     }
 
     @FXML
@@ -68,5 +83,7 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model;
+		boxStagione.getItems().clear();
+		boxStagione.getItems().addAll(model.getSeason());
 	}
 }
